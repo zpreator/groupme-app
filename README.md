@@ -12,9 +12,9 @@ Server disconnects after disconnecting ssh, solved by running linux screen progr
 
 ## Installation
 To install this application to an AWS or other linux server (raspberry pi?), go into the server via ssh, and run
-'''
+"""
 git clone [the-address-to-the-github]
-'''
+"""
 This will create a folder called groupme-app, which you then can cd into
 '''
 cd groupme-app
