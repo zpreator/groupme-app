@@ -15,7 +15,10 @@ def getMessages(group):
     if os.path.exists('data.csv'):
         data = pd.read_csv('data.csv')
         data.sort_values(by='created_at')
-        maxDate = data['created_at'].max()
+        try:
+            maxDate = data['created_at'].max()
+        except:
+            return getAllMessages(group)
     else:
         return getAllMessages(group)
     messageData = []
