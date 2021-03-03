@@ -45,7 +45,7 @@ def getAllMessages(group):
     return messages_df
 
 def convertAttachments(messages_df):
-    attachments = messages_df['attachments'].values.to_list()
+    attachments = messages_df['attachments'].tolist()
     newList = []
     for x in attachments:
         try:
@@ -56,7 +56,7 @@ def convertAttachments(messages_df):
     return messages_df
 
 def setFavNum(messages_df):
-    favorites = messages_df['favorited_by'].values.to_list()
+    favorites = messages_df['favorited_by'].tolist()
     fav_num = []
     for x in favorites:
         try:
