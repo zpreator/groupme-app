@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <body class="w3-black">
 <style>
   h1 {text-align: center;}
@@ -32,13 +33,25 @@
   <h4>total messages</h4>
 
   <hr/>
-  <h3>The most recent image with the coveted 8 likes:</h3>
-  <img src={{url}}>
-  <h4>Which was posted by:</h4>
-  <div>
-    <h4>{{user_best_image}}</h4>
-    <img src={{user_best_image_url}} style="border-radius: 50%; width: 100px">
+  <button id='best_image_btn' class="w3-button w3-light-grey w3-padding-large w3-section">
+    Best Image
+  </button>
+  <div id="best_image" style="display: none">
+    <h3>The most recent image with the coveted 8 likes:</h3>
+    <img src={{url}}>
+    <h4>Which was posted by:</h4>
+    <div>
+      <h4>{{user_best_image}}</h4>
+      <img src={{user_best_image_url}} style="border-radius: 50%; width: 100px">
+    </div>
   </div>
-
   <hr/>
 </div>
+
+<script>
+  $(document).ready(function(){
+ $("#best_image_btn").click(function(){
+    $("#best_image").slideToggle(1000);
+ });
+});
+</script>

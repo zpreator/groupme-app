@@ -69,6 +69,26 @@ def setFavNum(messages_df):
 def getMostLikedImage(messages_df):
     # df = getMessages(getGroup())
     attach_df = messages_df[messages_df['attachments'].map(len) > 0]
-    attach_df = attach_df.sort_values(by='fav_num', ascending=False)
+    # attach_df = attach_df.sort_values(by='fav_num', ascending=False)
+    attach_df = attach_df[attach_df['fav_num'] == 8]
+    attach_df = attach_df.sort_values(by='created_at')
     # print(attach_df['favorited_by'].head())
-    return attach_df.iloc[0]
+    return attach_df.iloc[-1]
+
+def getMostPopular(messages_df):
+    df_names = dict()
+    for k, v in messages_df.groupby('name'):
+        df_names[k] = v
+    # print(df_names['Zach Preator'].head())
+    # print("")
+    total_likes = []
+    for key in df_names.keys():
+        num = df_names[key]['fav_num'].sum()
+        total_likes.append({'name':key, 'total':num})
+    total_likes_df = pd.DataFrame.from_dict(total_likes)
+    total_likes_df = total_likes_df.sort_values(by='total', ascending=False)
+    # print(total_likes_df)
+    return total_likes_df
+
+# messages = getMessages(getGroup())
+# getMostPopular(messages)
