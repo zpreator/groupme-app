@@ -2,7 +2,7 @@
 from flask import Flask, render_template
 import io
 import base64
-from groupme import getGroup, getMessages, getMostLikedImage
+from groupme import *
 
 app = Flask(__name__)
 
@@ -16,12 +16,15 @@ def home():
     url = row['attachments'][0]['url']
     user_best_image = row['name']
     user_best_image_url = row['avatar_url']
+    popular_df = getMostPopular(messages)
+    image = getPopularityPlot(popular_df)
     return render_template('home.html', 
                            title='Large Fry Larry\'s', 
                            total_messages=length,
                            url=url,
                            user_best_image=user_best_image,
-                           user_best_image_url=user_best_image_url)
+                           user_best_image_url=user_best_image_url,
+                           most_popular_image=image)
 
 
 if __name__ == "__main__":

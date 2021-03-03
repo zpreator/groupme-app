@@ -1,6 +1,15 @@
 from groupy import Client
 import pandas as pd
 import os
+import io
+import base64
+import seaborn as sns
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+from matplotlib.figure import Figure
+# sns.set(style="ticks", context="talk")
+plt.style.use("dark_background")
+# sns.set(rc={'axes.facecolor':'black', 'figure.facecolor':'black'})
 
 def getGroup():
     client = Client.from_token('76c456305c8701394dff0a65443c347e')
@@ -90,5 +99,22 @@ def getMostPopular(messages_df):
     # print(total_likes_df)
     return total_likes_df
 
+def getPopularityPlot(total_likes_df):
+    fig = Figure()
+    axis = fig.add_subplot(1, 1, 1)
+    axis.set_title("Total Likes")
+    axis.grid()
+    # axis.plot(range(5), range(5), "ro-")
+    axis = sns.barplot(data=total_likes_df, y='name', x='total', ax=axis)
+    axis.set_xlabel("Name")
+    axis.set_ylabel("Likes")
+    fig.tight_layout()
+    pngImage = io.BytesIO()
+    FigureCanvas(fig).print_png(pngImage)
+    pngImageB64String = "data:image/png;base64,"
+    pngImageB64String += base64.b64encode(pngImage.getvalue()).decode('utf8')
+    return pngImageB64String
+
 # messages = getMessages(getGroup())
-# getMostPopular(messages)
+# total_likes_df = getMostPopular(messages)
+# getPopularityPlot(total_likes_df)

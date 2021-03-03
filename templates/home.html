@@ -45,13 +45,23 @@
       <img src={{user_best_image_url}} style="border-radius: 50%; width: 100px">
     </div>
   </div>
-  <hr/>
-</div>
 
+  <hr/>
+  <button id="most_popular_btn" class="w3-button w3-light-grey w3-padding-large w3-section">
+    Most Popular
+  </button>
+  <div id="most_popular" style="display: none">
+    <img src={{most_popular_image}} alt="popular plot">
+  </div>
+
+</div>
 <script>
   $(document).ready(function(){
  $("#best_image_btn").click(function(){
     $("#best_image").slideToggle(1000);
  });
+  $("#most_popular_btn").click(function(){
+    $("#most_popular").slideToggle(500);
+  })
 });
 </script>
