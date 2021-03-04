@@ -107,11 +107,57 @@ def getPopularityPlot(total_likes_df):
     axis.grid()
     # axis.plot(range(5), range(5), "ro-")
     axis = sns.barplot(data=total_likes_df, y='name', x='total', ax=axis)
+    # axis = sns.countplot(data=total_likes_df, y='name', ax=axis)
     axis.set_xlabel("Likes")
     axis.set_ylabel("Name")
-    fig.tight_layout()
+    # fig.tight_layout()
+    fig.set_tight_layout(True)
     pngImage = io.BytesIO()
     FigureCanvas(fig).print_png(pngImage)
+    pngImageB64String = "data:image/png;base64,"
+    pngImageB64String += base64.b64encode(pngImage.getvalue()).decode('utf8')
+    return pngImageB64String
+
+def getTotalPostsPlot(messages_df):
+    fig = Figure()
+    axis = fig.add_subplot(1, 1, 1)
+    axis.set_title("Total Posts")
+    axis.grid()
+    # axis.plot(range(5), range(5), "ro-")
+    axis = sns.countplot(data=messages_df, x='name', ax=axis, order = messages_df['name'].value_counts().index)
+    # axis = sns.countplot(data=total_likes_df, y='name', ax=axis)
+    axis.set_xlabel("Name")
+    axis.set_ylabel("Posts")
+    axis.set_xticklabels(axis.get_xticklabels(), rotation=90)
+    # fig.tight_layout()
+    fig.set_tight_layout(True)
+    pngImage = io.BytesIO()
+    FigureCanvas(fig).print_png(pngImage)
+    pngImageB64String = "data:image/png;base64,"
+    pngImageB64String += base64.b64encode(pngImage.getvalue()).decode('utf8')
+    return pngImageB64String
+
+def getLikesPerPost(messages_df):
+    df = messages_df[['name', 'fav_num']]
+    df = df.groupby('name', as_index=False).mean()
+    df = df.sort_values('fav_num', ascending=False)
+    # messages_df.groupby('name')['fav_num'].mean()
+    fig = Figure()
+    axis = fig.add_subplot(1, 1, 1)
+    axis.set_title("Average likes per Post")
+    axis.grid()
+    axis = sns.barplot(data=messages_df, 
+                       x='name', 
+                       y='fav_num', 
+                       ax=axis,
+                       order=df['name'].values)
+    axis.set_xticklabels(axis.get_xticklabels(), rotation=90)
+    axis.set_xlabel("Name")
+    axis.set_ylabel("Likes")
+    fig.set_tight_layout(True)
+    pngImage = io.BytesIO()
+    FigureCanvas(fig).print_png(pngImage)
+    pngImageB64String = "data:image/png;base64,"
     pngImageB64String = "data:image/png;base64,"
     pngImageB64String += base64.b64encode(pngImage.getvalue()).decode('utf8')
     return pngImageB64String

@@ -24,7 +24,9 @@ def home():
     url, user_best_image, user_best_image_url = getMostLikedImage(messages)
     setFavNum(messages)
     popular_df = getMostPopular(messages)
-    image = getPopularityPlot(popular_df)
+    total_posts_image = getTotalPostsPlot(messages)
+    most_popular_image = getPopularityPlot(popular_df)
+    likes_per_post_image = getLikesPerPost(messages)
     form = memeForm()
     rand_url, user_rand_image, user_rand_image_url = getRandomMeme(messages, form.likes.data)
     return render_template('home.html', 
@@ -33,7 +35,9 @@ def home():
                         url=url,
                         user_best_image=user_best_image,
                         user_best_image_url=user_best_image_url,
-                        most_popular_image=image,
+                        total_posts_image=total_posts_image,
+                        most_popular_image=most_popular_image,
+                        likes_per_post_image=likes_per_post_image,
                         form = form,
                         rand_url=rand_url,
                         user_rand_image=user_rand_image,
