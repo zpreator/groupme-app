@@ -76,13 +76,14 @@ def setFavNum(messages_df):
     return messages_df
 
 def getMostLikedImage(messages_df):
-    # df = getMessages(getGroup())
     attach_df = messages_df[messages_df['attachments'].map(len) > 0]
-    # attach_df = attach_df.sort_values(by='fav_num', ascending=False)
     attach_df = attach_df[attach_df['fav_num'] == 8]
     attach_df = attach_df.sort_values(by='created_at')
-    # print(attach_df['favorited_by'].head())
-    return attach_df.iloc[-1]
+    row = attach_df.iloc[-1]
+    url = row['attachments'][0]['url']
+    user = row['name']
+    avatar = row['avatar_url']
+    return url, user, avatar
 
 def getMostPopular(messages_df):
     df_names = dict()
@@ -115,6 +116,22 @@ def getPopularityPlot(total_likes_df):
     pngImageB64String += base64.b64encode(pngImage.getvalue()).decode('utf8')
     return pngImageB64String
 
+def getRandomMeme(messages_df, min_likes=0):
+    if min_likes == None:
+        min_likes = 0
+    attach_df = messages_df[messages_df['attachments'].map(len) > 0]
+    attach_df = attach_df[attach_df['fav_num'] >= min_likes]
+    rand = attach_df.sample()
+    row = rand.iloc[0]
+    try:
+        url = row['attachments'][0]['url']
+    except:
+        url = row['attachments'].iloc[0][0]['url']
+    user = row['name']
+    avatar = row['avatar_url']
+    return url, user, avatar
+
 # messages = getMessages(getGroup())
 # total_likes_df = getMostPopular(messages)
 # getPopularityPlot(total_likes_df)
+# getRandomMeme(messages)

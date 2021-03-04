@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-{% import "bootstrap/wtf.html" as wtf %}
+<!-- {% import "bootstrap/wtf.html" as wtf %} -->
 <body class="w3-black">
 <style>
   h1 {text-align: center;}
@@ -58,21 +58,29 @@
 
   <hr/>
   <h4>Generate a random meme from our backlog</h4>
-  <form action="/action_page.php" target="_blank">
-    <p><input class="w3-input w3-padding-16" type="text" placeholder="4" required name="MinFavs"></p>
+  <form method="POST" action="">
+    <!-- <p><input class="w3-input w3-padding-16" type="text" placeholder="4" required name="MinFavs"></p> -->
+    Minimum likes  {{ form.likes() }}
     <p>
-      <button class="w3-button w3-light-grey w3-padding-large" type="submit">
+      <button id="rand_meme_btn" class="w3-button w3-light-grey w3-padding-large" type="submit">
         <i class="fa fa-file-image-o"></i> Generate Meme
       </button>
     </p>
   </form>
-
-  {{wtf.quick_form(memeForm)}}
+  <div id="rand_image" style="">
+    <h3>Here ya go, loser: </h3>
+    <img src={{rand_url}}>
+    <h4>Which was posted by:</h4>
+    <div>
+      <h4>{{user_rand_image}}</h4>
+      <img src={{user_rand_image_url}} style="border-radius: 50%; width: 100px">
+    </div>
+  </div>
 </div>
 <script>
   $(document).ready(function(){
  $("#best_image_btn").click(function(){
-    $("#best_image").slideToggle(1000);
+    $("#best_image").slideToggle(500);
  });
   $("#most_popular_btn").click(function(){
     $("#most_popular").slideToggle(500);
