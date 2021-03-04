@@ -22,9 +22,7 @@ def home():
     messages = getMessages(group)
     length = len(messages)
     url, user_best_image, user_best_image_url = getMostLikedImage(messages)
-    # url = row['attachments'][0]['url']
-    # user_best_image = row['name']
-    # user_best_image_url = row['avatar_url']
+    setFavNum(messages)
     popular_df = getMostPopular(messages)
     image = getPopularityPlot(popular_df)
     form = memeForm()
