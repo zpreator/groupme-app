@@ -48,12 +48,16 @@
   </div>
 
   <hr/>
-  <button id="most_popular_btn" class="w3-button w3-light-grey w3-padding-large w3-section">
-    Most Popular
+  <button id="statistics_btn" class="w3-button w3-light-grey w3-padding-large w3-section">
+    Statistics
   </button>
-  <div id="most_popular" style="display: none">
-    <h4>Who's had the most likes?</h4>
+  <div id="statistics" style="display: none">
+    <h4>Who's been posting so much?</h4>
+    <img src={{total_posts_image}} alt="total_posts plot">
+    <h4>Who's the most popular?</h4>
     <img src={{most_popular_image}} alt="popular plot">
+    <h4>Who's got the best quality posts?</h4>
+    <img src={{likes_per_post_image}} alt = "likes_per_post plot">
   </div>
 
   <hr/>
@@ -82,8 +86,8 @@
  $("#best_image_btn").click(function(){
     $("#best_image").slideToggle(500);
  });
-  $("#most_popular_btn").click(function(){
-    $("#most_popular").slideToggle(500);
+  $("#statistics_btn").click(function(){
+    $("#statistics").slideToggle(500);
   })
 });
 </script>
