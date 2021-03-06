@@ -30,7 +30,7 @@ from user import User
 
 # Configuration
 config = configparser.ConfigParser()		
-config.read(r"C:\Repos\config\groupmeswag_config.ini")
+config.read(r"/home/ubuntu/config/groupmeswag_config.ini")
 keys = config['KEYS']
 GOOGLE_CLIENT_ID = keys["GOOGLE_CLIENT_ID"]
 GOOGLE_CLIENT_SECRET = keys["GOOGLE_CLIENT_SECRET"]
