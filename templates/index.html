@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<title>W3.CSS Template</title>
+<title>Large Fry Larry's Dashboard</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -26,6 +26,7 @@
   <!-- Header/Home -->
   <header class="w3-container w3-padding-32 w3-center w3-black" id="home">
     <h1 class="w3-jumbo">{{title}}</h1>
+    <p>Welcome: {{login_name}}</p>
     <hr/>
   </header>
 
@@ -71,7 +72,7 @@
       </button>
     </p>
   </form>
-  <div id="rand_image" style="">
+  <div id="rand_image" style="padding-bottom: 20px;">
     <h3>Here ya go, loser: </h3>
     <img src={{rand_url}}>
     <h4>Which was posted by:</h4>
@@ -80,6 +81,13 @@
       <img src={{user_rand_image_url}} style="border-radius: 50%; width: 100px">
     </div>
   </div>
+  <!-- <a class="button" href="/logout">Logout</a> -->
+  <hr/>
+  <form action="/logout" method="post">
+    <button class="w3-button w3-light-grey w3-padding-large">
+      Logout
+    </button>
+  </form>
 </div>
 <script>
   $(document).ready(function(){
