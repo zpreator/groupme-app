@@ -29,7 +29,7 @@ def home():
     likes_per_post_image = getLikesPerPost(messages)
     form = memeForm()
     rand_url, user_rand_image, user_rand_image_url = getRandomMeme(messages, form.likes.data)
-    return render_template('home.html', 
+    return render_template('index.html', 
                         title='Large Fry Larry\'s', 
                         total_messages=length,
                         url=url,
