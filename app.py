@@ -28,10 +28,10 @@ from db import init_db_command
 from user import User
 
 # Configuration
-# GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", None)
-GOOGLE_CLIENT_ID="844834903360-c5iu12hejg576jkvo4oo6vvhkts1g65m.apps.googleusercontent.com"
-# GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", None)
-GOOGLE_CLIENT_SECRET = 'gF3kHGUvTuNh3olDRFLRKmZh'
+GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", None)
+# GOOGLE_CLIENT_ID="844834903360-c5iu12hejg576jkvo4oo6vvhkts1g65m.apps.googleusercontent.com"
+GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", None)
+# GOOGLE_CLIENT_SECRET = 'gF3kHGUvTuNh3olDRFLRKmZh'
 GOOGLE_DISCOVERY_URL = ("https://accounts.google.com/.well-known/openid-configuration")
 
 # Flask app setup
@@ -202,4 +202,4 @@ def showIndex():
                         user_rand_image_url=user_rand_image_url)
 
 if __name__ == "__main__":
-    app.run(ssl_context="adhoc", port=80)
+    app.run(ssl_context="adhoc", port=443)

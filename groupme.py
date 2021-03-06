@@ -13,7 +13,8 @@ plt.style.use("dark_background")
 
 def getGroup():
     groupme_key = os.environ.get("GROUPME_KEY")
-    client = Client.from_token('76c456305c8701394dff0a65443c347e')
+    client = Client.from_token(groupme_key)
+    # client = Client.from_token('76c456305c8701394dff0a65443c347e')
     groups = list(client.groups.list_all())
     for group in groups:
         print(group.name)
