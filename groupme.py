@@ -12,6 +12,7 @@ plt.style.use("dark_background")
 # sns.set(rc={'axes.facecolor':'black', 'figure.facecolor':'black'})
 
 def getGroup():
+    groupme_key = os.environ.get("GROUPME_KEY")
     client = Client.from_token('76c456305c8701394dff0a65443c347e')
     groups = list(client.groups.list_all())
     for group in groups:
@@ -50,6 +51,11 @@ def getAllMessages(group):
         messageData.append(message.data)
     
     messages_df = pd.DataFrame.from_dict(messageData, orient='columns')
+    messages_df = messages_df[messages_df['sender_type']=='user'] # Filters out groupme stuff
+    list_to_delete = ['GroupMe', 'Zach  Preator', 'Zach Preator 2', 'Donald J. Trump', 'John Cena', 'Shad Karlson, a liberal']
+    df_to_delete = messages_df[messages_df['name'].isin(list_to_delete)].index
+    messages_df = messages_df.drop(df_to_delete)
+    setFavNum(messages_df)
     messages_df.to_csv('data.csv')
     return messages_df
 
@@ -167,12 +173,15 @@ def getRandomMeme(messages_df, min_likes=0):
         min_likes = 0
     attach_df = messages_df[messages_df['attachments'].map(len) > 0]
     attach_df = attach_df[attach_df['fav_num'] >= min_likes]
-    rand = attach_df.sample()
-    row = rand.iloc[0]
-    try:
-        url = row['attachments'][0]['url']
-    except:
-        url = row['attachments'].iloc[0][0]['url']
+    loop = True
+    while loop:
+        rand = attach_df.sample()
+        row = rand.iloc[0]
+        try:
+            url = row['attachments'][0]['url']
+            loop = False
+        except:
+            loop = True
     user = row['name']
     avatar = row['avatar_url']
     return url, user, avatar

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<title>Large Fry Larry's Dashboard</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+{% import "bootstrap/wtf.html" as wtf %}
+<body class="w3-black">
+<style>
+    h1 {text-align: center;}
+    p {text-align: center;}
+    div {text-align: center;}
+    img {
+            width: 100%;
+            height: 100%;
+            max-width: 400px;
+        }
+    .center {
+    border: 5px solid #FFFF00;
+    text-align: center;
+    }
+    form {
+    text-align: center;
+    }
+</style>
+
+
+<!-- Page Content -->
+<div class="w3-padding-large" id="main">
+  <body>
+    <div class="container">
+      <form action="/login" method="post">
+        <button class="w3-button w3-light-grey w3-padding-large" type="submit">
+            <i class="fa fa-paper-plane"></i> Login with Google
+        </button>
+        </p>
+      </form>
+  </body>
+</html>
