@@ -5,6 +5,7 @@ import base64
 import os
 import json
 import sqlite3
+import configparser
 
 # Third-party libraries
 from flask import Flask, render_template, redirect, url_for, request, session
@@ -28,11 +29,13 @@ from db import init_db_command
 from user import User
 
 # Configuration
-GOOGLE_CLIENT_ID = os.environ.get("GOOGLE_CLIENT_ID", None)
-# GOOGLE_CLIENT_ID="844834903360-c5iu12hejg576jkvo4oo6vvhkts1g65m.apps.googleusercontent.com"
-GOOGLE_CLIENT_SECRET = os.environ.get("GOOGLE_CLIENT_SECRET", None)
-# GOOGLE_CLIENT_SECRET = 'gF3kHGUvTuNh3olDRFLRKmZh'
+config = configparser.ConfigParser()		
+config.read(r"C:\Repos\config\groupmeswag_config.ini")
+keys = config['KEYS']
+GOOGLE_CLIENT_ID = keys["GOOGLE_CLIENT_ID"]
+GOOGLE_CLIENT_SECRET = keys["GOOGLE_CLIENT_SECRET"]
 GOOGLE_DISCOVERY_URL = ("https://accounts.google.com/.well-known/openid-configuration")
+GROUPME_KEY = keys['GROUPME_KEY']
 
 # Flask app setup
 app = Flask(__name__)
@@ -176,7 +179,7 @@ class memeForm(FlaskForm):
     likes = IntegerField('likes', validators=[DataRequired()])
 
 def showIndex():
-    group = getGroup()
+    group = getGroup(GROUPME_KEY)
     messages = getMessages(group)
     length = len(messages)
     url, user_best_image, user_best_image_url = getMostLikedImage(messages)
