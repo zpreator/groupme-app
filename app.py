@@ -202,4 +202,4 @@ def showIndex():
                         user_rand_image_url=user_rand_image_url)
 
 if __name__ == "__main__":
-    app.run(ssl_context="adhoc")
+    app.run(ssl_context="adhoc", port=443)
