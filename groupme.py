@@ -1,9 +1,15 @@
 from groupy import Client
 import pandas as pd
+import numpy as np
 import os
 import io
 import base64
 import seaborn as sns
+import holoviews as hv
+from chord import Chord
+import configparser
+from bokeh.io import export_png, export_svg
+from bokeh.plotting import show, output_file, save
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
@@ -73,12 +79,18 @@ def convertAttachments(messages_df):
 def setFavNum(messages_df):
     favorites = messages_df['favorited_by'].tolist()
     fav_num = []
+    favorited_by = []
     for x in favorites:
         try:
-            fav_num.append(len(eval(x)))
+            favs = eval(x)
+            favorited_by.append(favs)
+            fav_num.append(len(favs))
         except:
-            fav_num.append(len(x))
+            favs = x
+            favorited_by.append(favs)
+            fav_num.append(len(favs))
     messages_df['fav_num'] = fav_num
+    messages_df['favorited_by'] = favorited_by
     return messages_df
 
 def getMostLikedImage(messages_df):
@@ -168,6 +180,56 @@ def getLikesPerPost(messages_df):
     pngImageB64String += base64.b64encode(pngImage.getvalue()).decode('utf8')
     return pngImageB64String
 
+def getChordDiagram(messages_df):
+    # name_id = messages_df[['sender_id', 'name']].astype(str)
+    # name_id = name_id.tail(200)
+    # name_id = name_id.drop_duplicates().set_index('sender_id').to_dict()
+    names_dict = {'17289343': 'Ben Pagel', '18257442': 'Logan Camilletti', '23885372': 'Jake Linford', '41651233': 'Shad Karlson', '41651237': 'Jackson Esplin', '43797901': 'John Hammond', '52396192': 'Jon Michael Ossola', '9803929': 'Zach Preator'}
+    df = messages_df[['sender_id', 'favorited_by', 'fav_num']]
+    df = df[df['fav_num'] > 0]
+    df = df[['sender_id', 'favorited_by']]
+    df = df.explode('favorited_by')
+    df = df.groupby(df.columns.tolist()).size().reset_index().rename(columns={0:'likes'})
+    df['sender_id'] = df['sender_id'].astype(str)
+    df['favorited_by'] = df['favorited_by'].astype(str)
+    df = df.replace(names_dict)
+    names = list(set(df["favorited_by"].unique().tolist() + df["sender_id"].unique().tolist()))
+    names_dataset = hv.Dataset(pd.DataFrame(names, columns=["Name"]))
+    
+    chord = hv.Chord((df, names_dataset))
+
+    #Bokeh
+    # hv.extension("bokeh")
+    # plot = chord.opts(labels='Name', 
+    #                   node_color='Name', 
+    #                   edge_color='favorited_by', 
+    #                   label_index='sender_id', 
+    #                   cmap='Category10', 
+    #                   edge_cmap='Category10', 
+    #                   width=1000, 
+    #                   height=1000, 
+    #                   bgcolor="black", 
+    #                   label_text_color="white")
+    # output_file('templates/likes.html')
+    # save(hv.render(chord))
+    # hv.save(plot, 'static/likes.svg', fmt='auto')
+
+    #Matplotlib
+    hv.extension('matplotlib')
+    plot = chord.opts(labels='Name', 
+                      node_color='Name', 
+                      edge_color='favorited_by', 
+                      label_index='sender_id', 
+                      cmap='Category10', 
+                      edge_cmap='Category10', 
+                      bgcolor="black")
+    # output_file('templates/likes.html')
+    # save(plot)
+    hv.save(plot, 'static/likes.svg', fmt='auto')
+    hv.save(plot, 'templates/likes.html', fmt='auto')
+    # export_svg(plot, filename='static/likes.svg')
+    return plot
+
 def getRandomMeme(messages_df, min_likes=0):
     if min_likes == None:
         min_likes = 0
@@ -177,16 +239,26 @@ def getRandomMeme(messages_df, min_likes=0):
     while loop:
         rand = attach_df.sample()
         row = rand.iloc[0]
+        attachments = row['attachments'][0]
         try:
-            url = row['attachments'][0]['url']
+            url = attachments['url']
             loop = False
         except:
             loop = True
+    if pd.isna(row['text']):
+        text= ''
+    else:
+        text = '"' + str(row['text']) + '"'
     user = row['name']
     avatar = row['avatar_url']
-    return url, user, avatar
+    return url, user, avatar, text
 
-# messages = getMessages(getGroup())
+# config = configparser.ConfigParser()		
+# config.read(r"C:\Repos\config\groupmeswag_config.ini")
+# keys = config['KEYS']
+# GROUPME_KEY = keys['GROUPME_KEY']
+# messages = getMessages(getGroup(GROUPME_KEY))
 # total_likes_df = getMostPopular(messages)
 # getPopularityPlot(total_likes_df)
 # getRandomMeme(messages)
+# getChordDiagram(messages)

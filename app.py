@@ -6,6 +6,7 @@ import os
 import json
 import sqlite3
 import configparser
+from bokeh.embed import components
 
 # Third-party libraries
 from flask import Flask, render_template, redirect, url_for, request, session
@@ -27,6 +28,8 @@ from flask_bootstrap import Bootstrap
 from groupme import *
 from db import init_db_command
 from user import User
+
+messages = pd.DataFrame()
 
 # Configuration
 config = configparser.ConfigParser()		
@@ -72,19 +75,17 @@ def load_user(user_id):
 
 @app.route("/", methods=['POST', 'GET'])
 def index():
-    if current_user.is_authenticated:
-        # return (
-        #     "<p>Hello, {}! You're logged in! Email: {}</p>"
-        #     "<div><p>Google Profile Picture:</p>"
-        #     '<img src="{}" alt="Google profile pic"></img></div>'
-        #     '<a class="button" href="/logout">Logout</a>'.format(
-        #         current_user.name, current_user.email, current_user.profile_pic
-        #     )
-        # )
-        return showIndex()
-    else:
-        return render_template('login.html')
+    # if current_user.is_authenticated:
+    #     return showIndex()
+    # else:
+    return render_template('login.html')
 
+@app.route("/statistics", methods=['POST', 'GET'])
+def statistics():
+    # if not current_user.is_authenticated:
+    #     return render_template('login.html')
+    # else:
+    return render_template('likes.html')
 
 @app.route("/login", methods=['POST', 'GET'])
 def login():
@@ -100,7 +101,6 @@ def login():
         scope=["openid", "email", "profile"],
     )
     return redirect(request_uri)
-    # return render_template('login.html', link=request_uri)
 
 
 @app.route("/login/callback")
@@ -179,30 +179,36 @@ class memeForm(FlaskForm):
     likes = IntegerField('likes', validators=[DataRequired()])
 
 def showIndex():
+    global messages
     group = getGroup(GROUPME_KEY)
     messages = getMessages(group)
     length = len(messages)
     url, user_best_image, user_best_image_url = getMostLikedImage(messages)
     setFavNum(messages)
     popular_df = getMostPopular(messages)
+    chord_plot = os.path.join('static', 'likes.svg')
     total_posts_image = getTotalPostsPlot(messages)
     most_popular_image = getPopularityPlot(popular_df)
     likes_per_post_image = getLikesPerPost(messages)
     form = memeForm()
-    rand_url, user_rand_image, user_rand_image_url = getRandomMeme(messages, form.likes.data)
+    plot = getChordDiagram(messages)
+    rand_url, user_rand_image, user_rand_image_url, text_rand_image = getRandomMeme(messages, form.likes.data)
     return render_template('index.html', 
-                        title='Large Fry Larry\'s', 
+                        title='Large Fry Larry\'s',
+                        login_name=current_user.name,
                         total_messages=length,
                         url=url,
                         user_best_image=user_best_image,
                         user_best_image_url=user_best_image_url,
+                        chord_plot=chord_plot,
                         total_posts_image=total_posts_image,
                         most_popular_image=most_popular_image,
                         likes_per_post_image=likes_per_post_image,
                         form = form,
                         rand_url=rand_url,
                         user_rand_image=user_rand_image,
-                        user_rand_image_url=user_rand_image_url)
+                        user_rand_image_url=user_rand_image_url,
+                        text_rand_image=text_rand_image)
 
 if __name__ == "__main__":
-    app.run(ssl_context="adhoc", host="0.0.0.0", port=443)
+    app.run(ssl_context="adhoc", port=5000)
