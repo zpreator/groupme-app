@@ -211,4 +211,4 @@ def showIndex():
                         text_rand_image=text_rand_image)
 
 if __name__ == "__main__":
-    app.run(ssl_context="adhoc", port=5000)
+    app.run(ssl_context="adhoc", port=80)
