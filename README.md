@@ -33,3 +33,9 @@ sudo python3 main.py
 
 It will say 'running on '0.0.0.0:80' or something similar, which is the local address. To access the website,
 find the IPV4 address (on AWS its in the instance description).
+
+## For Google Login
+https://realpython.com/flask-google-login/
+
+## For HTTPS stuff, NGINX
+https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-uswgi-and-nginx-on-ubuntu-18-04

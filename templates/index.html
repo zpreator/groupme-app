@@ -53,6 +53,13 @@
     Statistics
   </button>
   <div id="statistics" style="display: none">
+    <h4>Who likes whom?</h4>
+    <form method="POST" action="/statistics">
+      <label>
+        <input type="submit" name="image" value="one" style="display: none;">
+        <img src="{{chord_plot}}" />
+      </label>
+    </form>
     <h4>Who's been posting so much?</h4>
     <img src={{total_posts_image}} alt="total_posts plot">
     <h4>Who's the most popular?</h4>
@@ -60,7 +67,6 @@
     <h4>Who's got the best quality posts?</h4>
     <img src={{likes_per_post_image}} alt = "likes_per_post plot">
   </div>
-
   <hr/>
   <h4>Generate a random meme from our backlog</h4>
   <form method="POST" action="">
@@ -75,9 +81,9 @@
   <div id="rand_image" style="padding-bottom: 20px;">
     <h3>Here ya go, loser: </h3>
     <img src={{rand_url}}>
-    <h4>Which was posted by:</h4>
+    <h4>{{text_rand_image}}</h4>
     <div>
-      <h4>{{user_rand_image}}</h4>
+      <h4>   -{{user_rand_image}}</h4>
       <img src={{user_rand_image_url}} style="border-radius: 50%; width: 100px">
     </div>
   </div>
